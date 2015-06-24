@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Caution : Do not change the Domain names 
+
+ -->
+<project name="GPMIDSDomain" default="all" basedir=".">
+	<property name="ids.class.dir" value="${basedir}/target/classes" />
+	<property name="ids.jar.file" value="${basedir}/target/jar/GPMIDSDomain.jar" />
+	<property name="ids.jar.dir" value="${basedir}/target/jar" />
+
+	<!-- Main target -->
+	<target name="all" depends="init,compile,build-ids-jar,move-ids-jar" />
+
+	<target name="init" description="Clean up folders">
+		<delete dir="${ids.jar.dir}" />
+		<delete dir="${ids.class.dir}" />
+		<echo message="Cleaned" />
+		<mkdir dir="${ids.jar.dir}" />
+		<mkdir dir="${ids.class.dir}" />
+		<echo message="All new directory created" />
+	</target>
+
+	<target name="compile" description="Compile all java code">
+		<javac srcdir="src" destdir="${ids.class.dir}" includeantruntime="false">
+		</javac>
+	</target>
+
+	<!-- Create Jar File -->
+	<target name="build-ids-jar" description="Generate IDS jar">
+		<jar destfile="${ids.jar.file}" basedir="${ids.class.dir}" />
+	</target>
+
+	<target name="move-ids-jar" description="Moving IDS jar to Hosting services for dependency">
+		<move todir="${gpm.workspace}/${gpm.jar.dir}">
+			<filelist dir="${ids.jar.dir}">
+				<file name="${ids.jar.file}" />
+			</filelist>
+		</move>
+	</target>
+
+</project>
