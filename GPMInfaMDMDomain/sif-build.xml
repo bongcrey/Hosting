@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Caution : Do not change the Domain names 
+
+ -->
+<project name="GPMInfaMDMDomain" default="all" basedir=".">
+	<property name="sif.class.dir" value="${basedir}/target/classes" />
+	<property name="sif.jar.file" value="${basedir}/target/jar/GPMInfaMDMDomain.jar" />
+	<property name="sif.jar.dir" value="${basedir}/target/jar" />
+
+	<!-- Main target -->
+	<target name="all" depends="init,compile,build-sif-jar,move-sif-jar" />
+
+	<target name="init" description="Clean up folders">
+		<delete dir="${sif.jar.dir}" />
+		<delete dir="${sif.class.dir}" />
+		<echo message="Cleaned" />
+		<mkdir dir="${sif.jar.dir}" />
+		<mkdir dir="${sif.class.dir}" />
+		<echo message="All new directory created" />
+	</target>
+
+	<target name="compile" description="Compile all java code">
+		<javac srcdir="src" destdir="${sif.class.dir}" includeantruntime="false">
+		</javac>
+	</target>
+
+	<!-- Create Jar File -->
+	<target name="build-sif-jar" description="Generate SIF jar">
+		<jar destfile="${sif.jar.file}" basedir="${sif.class.dir}" />
+	</target>
+
+	<target name="move-sif-jar" description="Moving SIF jar to Hosting services for dependency">
+		<move todir="${gpm.workspace}/${gpm.jar.dir}">
+			<filelist dir="${sif.jar.dir}">
+				<file name="${sif.jar.file}" />
+			</filelist>
+		</move>
+	</target>
+
+</project>
